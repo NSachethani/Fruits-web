@@ -1,0 +1,106 @@
+//This is the javascript page
+const fruits = [
+    { id: 1, name: 'Orange', price: 2.99, category: 'citrus', image: 'https://images.unsplash.com/photo-1547514701-42782101795e?w=300' },
+    { id: 2, name: 'Lemon', price: 1.99, category: 'citrus', image: 'https://images.unsplash.com/photo-1590502593747-42a996133562?w=300' },
+    { id: 3, name: 'Mango', price: 3.99, category: 'tropical', image: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=300' },
+    { id: 4, name: 'Pineapple', price: 4.49, category: 'tropical', image: 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=300' },
+    { id: 5, name: 'Strawberry', price: 5.99, category: 'berry', image: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=300' },
+    { id: 6, name: 'Blueberry', price: 6.99, category: 'berry', image: 'https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=300' },
+    { id: 7, name: 'Grapefruit', price: 3.49, category: 'citrus', image: 'https://images.unsplash.com/photo-1582979512210-99b6a53386f9?w=300' },
+    { id: 8, name: 'Banana', price: 1.49, category: 'tropical', image: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300' },
+    { id: 9, name: 'Raspberry', price: 7.99, category: 'berry', image: 'https://images.unsplash.com/photo-1577069861033-55d04cec4ef5?w=300' }
+];
+
+let cart = [];
+
+function renderFruits(filter = 'all') {
+    const container = document.getElementById('fruits-container');
+    const filtered = filter === 'all' ? fruits : fruits.filter(f => f.category === filter);
+    
+    container.innerHTML = filtered.map(fruit => `
+        <div class="fruit-card">
+            <img src="${fruit.image}" alt="${fruit.name}" class="fruit-image">
+            <h3>${fruit.name}</h3>
+            <span class="price">$${fruit.price.toFixed(2)}/lb</span>
+            <button class="add-to-cart" onclick="addToCart(${fruit.id})">Add to Cart</button>
+        </div>
+    `).join('');
+}
+
+function addToCart(id) {
+    const fruit = fruits.find(f => f.id === id);
+    const existing = cart.find(item => item.id === id);
+    
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({ ...fruit, quantity: 1 });
+    }
+    
+    updateCart();
+    alert(`${fruit.name} added to cart!`);
+}
+
+function updateCart() {
+    document.getElementById('cart-count').textContent = cart.reduce((sum, item) => sum + item.quantity, 0);
+    
+    const cartItems = document.getElementById('cart-items');
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<p>Your cart is empty</p>';
+    } else {
+        cartItems.innerHTML = cart.map((item, index) => `
+            <div class="cart-item">
+                <span>${item.name} x${item.quantity}</span>
+                <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                <button onclick="removeFromCart(${index})">X</button>
+            </div>
+        `).join('');
+    }
+    
+    document.getElementById('cart-total').textContent = total.toFixed(2);
+}
+
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    updateCart();
+}
+
+function toggleCart() {
+    document.getElementById('cart-modal').classList.toggle('show');
+}
+
+function checkout() {
+    if (cart.length === 0) {
+        alert('Your cart is empty!');
+        return;
+    }
+    alert('Thank you for your order! Fresh fruits coming your way.');
+    cart = [];
+    updateCart();
+    toggleCart();
+}
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderFruits(btn.dataset.filter);
+    });
+});
+
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Message sent successfully!');
+    e.target.reset();
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+renderFruits();
