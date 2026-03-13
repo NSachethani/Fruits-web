@@ -1,2 +1,92 @@
 # Fruits-web
-I created fruits website using  html,css and java script
+//I created fruits website using  html,css and java script
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fresh Fruits</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">FreshFruits</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#fruits">Fruits</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="cart-icon" onclick="toggleCart()">
+                Cart (<span id="cart-count">0</span>)
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Fresh & Delicious Fruits</h1>
+            <p>Discover the finest selection of fresh fruits delivered to your door</p>
+            <a href="#fruits" class="btn">Shop Now</a>
+        </div>
+    </section>
+
+    <section id="fruits" class="fruits-section">
+        <h2>Our Fruits</h2>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="citrus">Citrus</button>
+            <button class="filter-btn" data-filter="tropical">Tropical</button>
+            <button class="filter-btn" data-filter="berry">Berries</button>
+        </div>
+        <div id="fruits-container" class="fruits-grid"></div>
+    </section>
+
+    <section id="about" class="about-section">
+        <h2>Why Choose Us?</h2>
+        <div class="features">
+            <div class="feature">
+                <h3>Fresh Daily</h3>
+                <p>Fruits delivered fresh every morning</p>
+            </div>
+            <div class="feature">
+                <h3>Organic</h3>
+                <p>100% organic and pesticide-free</p>
+            </div>
+            <div class="feature">
+                <h3>Fast Delivery</h3>
+                <p>Same-day delivery available</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Contact Us</h2>
+        <form id="contact-form">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <textarea id="message" placeholder="Your Message" required></textarea>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </section>
+
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-content">
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+            <h3>Your Cart</h3>
+            <div id="cart-items"></div>
+            <div class="cart-total">
+                Total: $<span id="cart-total">0.00</span>
+            </div>
+            <button class="btn" onclick="checkout()">Checkout</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 FreshFruits. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
